@@ -6,22 +6,22 @@
                 <router-link to="/" class="btn btn-outline-info float-right">View all projects</router-link>
             </div>
             <div class="card-body">
-                <form>
+                <form @submit.prevent="">
                     <div class="form-group">
-                        <label htmlFor="name">Name</label>
-                        <input type="text" name="name" id="name" class="form-control" v-model="name">
+                        <label for="title">Title</label>
+                        <input type="text"  id="title" class="form-control" v-model="postData.title">
                     </div>
                     <div class="form-group">
-                        <label htmlFor="description">Description</label>
-                        <textarea name="description" id="description" class="form-control" v-model="description" rows="3"></textarea>
+                        <label for="body">Body</label>
+                        <textarea id="body" class="form-control" v-model="postData.body" rows="3"></textarea>
                     </div>
                     <button
                     class="btn btn-outline-primary mt-3"
                     @click="handleSave"
-                    :disabled="isSaving"
                     type="button"
                     >
-                    Save Project
+                    <span :class="{'d-none': isSaving}">Save Project</span>
+                    <div class="spinner-border" role="status" v-if="isSaving"></div>
                     </button>
                 </form>
             </div>
@@ -35,13 +35,17 @@ import {ref} from 'vue'
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
-const name = ref('');
-const description = ref('');
+const postData = ref({
+    title: '',
+    body: '',
+    userId: 1
+})
 const isSaving = ref(false);
 
 function handleSave() {
     isSaving.value = true;
-    axios.post('https://mock-api.binaryboxtuts.com/api/projects', name.value, description.value)
+    axios
+    .post('https://jsonplaceholder.typicode.com/posts', postData.value)
     .then(response => {
         Swal.fire({
             icon: 'success',
@@ -50,9 +54,8 @@ function handleSave() {
             timer: 1500
         })
         isSaving.value = false;
-        name.value = '';
-        description.value = '';
-        return response;
+        postData.value = '';
+        return console.log(response);
     })
     .catch(error => {
         isSaving.value = false;
@@ -62,8 +65,6 @@ function handleSave() {
             showConfirmButton: false,
             timer: 1500
         })
-        name.value = '';
-        description.value = '';
         return error
     })
 }
