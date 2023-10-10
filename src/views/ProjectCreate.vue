@@ -45,7 +45,7 @@ const isSaving = ref(false);
 function handleSave() {
     isSaving.value = true;
     axios
-    .post('https://jsonplaceholder.typicode.com/posts', postData.value)
+    .post('http://localhost:3000/posts', postData.value)
     .then(response => {
         Swal.fire({
             icon: 'success',

@@ -63,7 +63,7 @@ const isSaving = ref(false);
 const route = useRoute();
 const id = route.params.id;
 
-axios.get(`https://jsonplaceholder.typicode.com/posts/${id}`)
+axios.get(`http://localhost:3000/posts/${id}`)
 .then(response => {
     let projectInfo = response.data;
     postData.title = projectInfo.title;
@@ -82,7 +82,7 @@ axios.get(`https://jsonplaceholder.typicode.com/posts/${id}`)
 
 function handleSave() {
     isSaving.value = true;
-    axios.patch(`https://jsonplaceholder.typicode.com/posts/${id}`, postData.value)
+    axios.patch(`http://localhost:3000/posts/${id}`, postData.value)
     .then(response => {
         Swal.fire({
             icon: 'success',
